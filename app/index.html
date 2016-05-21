@@ -1,13 +1,14 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="my-app">
 <head>
 <meta charset="UTF-8">
 <title></title>
 
 </head>
-<body class="">
+<body class="" ng-controller="main-controller">
 
 <div class="main">
+{{name}}
 </div>
 
 
@@ -16,6 +17,9 @@
 <script src="lib/angular-ui-router.js"></script>
 <script src="lib/ui-bootstrap-tpls-0.12.0-SNAPSHOT.min.js"></script>
 <script src="lib/lodash.js"></script>
+
+<script src="main-module.js"></script>
+<script src="main-controller.js"></script>
 
 </body>
 </html>
