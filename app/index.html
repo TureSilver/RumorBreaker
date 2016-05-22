@@ -7,11 +7,28 @@
 </head>
 <body class="" ng-controller="main-controller">
 
+<div class="title">Rumors Breaker</div>
+
 <div class="main">
-	<br>
-    <textarea placeholder="输入文本：月球上能看到长城" ng-model="inputText" class="paragraph-box"></textarea>
-    <br>
-    <input type="submit" value="Submit" ng-click="submit()">
+
+	<div class="left">
+
+		<br>
+		<textarea placeholder="输入文本： 在外太空可以看到长城吗？ " ng-model="inputText" class="paragraph-box"></textarea>
+		<br>
+		<input type="submit" value="Try break it now!" ng-click="submit()" class="submit">
+
+		<div class="probability" ng-show="probability">{{probability}}</div>
+	</div>
+
+
+
+	<div class="right">
+		<div ng-repeat="doc in similar">
+			<div>{{doc.content}}</div>
+		</div>
+	</div>
+
 </div>
 
 

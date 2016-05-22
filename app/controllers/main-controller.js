@@ -6,9 +6,15 @@ angular.module('my-app').controller('main-controller', function($scope, $window,
 
 
 	$scope.name = 'This is a rumor breaker';
+
 	$scope.submit = function() {
     findSimilar($scope.inputText).then(function(documents) {
       console.log('got ' + documents.length + ' similar docs.');
+      if (documents.length > 0) {
+        $scope.similar = documents;
+        $scope.probability = '78.5%';
+      }
+
     });
   };
 
@@ -22,9 +28,10 @@ angular.module('my-app').controller('main-controller', function($scope, $window,
     url += '?language=' + 'chi';
     url += '&text=' + encoded;
     url += '&indexes=articles';
+    url += '&print=all';
 
-    $http.post( url).then(function(data) {
-      var documents = data['documents'];
+    $http.post( url).then(function(res) {
+      var documents = res.data['documents'];
       defer.resolve(documents);
       console.log('done');
     }, function(e) {
