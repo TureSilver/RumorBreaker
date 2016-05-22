@@ -15,7 +15,7 @@ angular.module('my-app').controller('main-controller', function($scope, $window,
         analyzeSentiment($scope.similar[0].content).then(function(data) {
           var score = data['aggregate']['score'];
           if (score < 0) {
-            $scope.probability = ((1 + score) * 100).toString();
+            $scope.probability = ((0.5 + Math.abs(score)) * 100).toString();
             $scope.probability = $scope.probability.substring(0,5) + '%';
           }
         });
