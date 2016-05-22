@@ -70,11 +70,15 @@ var api = function(req, res) {
 var page = function(req, res) {
   var path = getPath(req);
   if(path === '/') {
-    path = '/app/index.html';
+    path = './app/index.html';
+  } else {
+    path = './app' + path;
   }
-  fs.readFile('./app' + path, function (err, html) {
+  fs.readFile(path, function (err, html) {
     if (err) {
-      throw err;
+      res.end();
+      return;
+      //throw err;
     }
     res.writeHeader(200, {"Content-Type": "text/html"});
     res.write(html);

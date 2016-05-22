@@ -1,6 +1,6 @@
 angular.module('my-app').controller('main-controller', function($scope, $window, $http) {
   var host= 'http://localhost:8080';
-  var analyzeUrl = '/1/api/sync/analyzesentiment/v1';
+  var analyzeUrl = '/api/analyzesentiment';
   var apikey = '0ad13f9a-ee6a-4aa1-bd85-63d9a5832580';
 
 
