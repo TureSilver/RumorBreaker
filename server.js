@@ -70,7 +70,7 @@ var api = function(req, res) {
 var page = function(req, res) {
   var path = getPath(req);
   if(path.match('/')) {
-    path = './app/index.html';
+    path = '/app/index.html';
   }
   fs.readFile('.' + path, function (err, html) {
     if (err) {
