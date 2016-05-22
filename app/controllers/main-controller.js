@@ -12,11 +12,38 @@ angular.module('my-app').controller('main-controller', function($scope, $window,
       console.log('got ' + documents.length + ' similar docs.');
       if (documents.length > 0) {
         $scope.similar = documents;
-        $scope.probability = '78.5%';
+        analyzeSentiment($scope.similar[0].content).then(function(data) {
+          var score = data['aggregate']['score'];
+          if (score < 0) {
+            $scope.probability = ((1 + score) * 100).toString();
+            $scope.probability = $scope.probability.substring(0,5) + '%';
+          }
+        });
+
       }
 
     });
   };
+
+  function analyzeSentiment(inputText) {
+    var defer = $q.defer();
+
+    var encoded = $window.encodeURI(inputText);
+
+    var url = host + analyzeUrl;
+
+    url += '?language=' + 'chi';
+    url += '&text=' + encoded;
+
+    $http.post( url).then(function(res) {
+      var documents = res.data;
+      defer.resolve(documents);
+      console.log('done');
+    }, function(e) {
+      console.log('[Error]' + e);
+    });
+    return defer.promise;
+  }
 
   function findSimilar(inputText) {
     var defer = $q.defer();
