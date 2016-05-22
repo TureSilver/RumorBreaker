@@ -7,7 +7,9 @@ angular.module('my-app').controller('main-controller', function($scope, $window,
 
 	$scope.name = 'This is a rumor breaker';
 	$scope.submit = function() {
-    findSimilar($scope.inputText);
+    findSimilar($scope.inputText).then(function(documents) {
+      console.log('got ' + documents.length + ' similar docs.');
+    });
   };
 
   function findSimilar(inputText) {
