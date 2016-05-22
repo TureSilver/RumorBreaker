@@ -10,11 +10,11 @@ angular.module('my-app').controller('main-controller', function($scope, $window,
 
     var url = host + analyzeUrl;
 
-    url += '?apikey=' + apikey;
-    url += '&language=' + 'chi';
+    //url += '?apikey=' + apikey;
+    url += '?language=' + 'chi';
     url += '&text=' + encoded;
 
-    $http.get(url).then(function() {
+    $http.post( url).then(function() {
       console.log('done');
     }, function(e) {
       console.log('[Error]' + e);
