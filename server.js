@@ -80,7 +80,11 @@ var page = function(req, res) {
     if (err) {
       throw err;
     }
-    res.writeHeader(200, {"Content-Type": "text/html"});
+    var contentType = "text/html";
+    if (path.match('.css')) {
+      contentType = "text/css";
+    }
+    res.writeHeader(200, {"Content-Type": contentType});
     res.write(html);
     res.end();
   })
