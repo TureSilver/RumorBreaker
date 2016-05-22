@@ -21,7 +21,9 @@ var getHeader = function (req) {
     }
   }
   ret['content-type'] = 'application/x-www-form-urlencoded';
-  ret['content-length'] = (parseInt(ret['content-length']) + body.length).toString();
+  if (/POST|PUT/i.test(req.method)) {
+    ret['content-length'] = (parseInt(ret['content-length']) + body.length).toString();
+  }
   return ret;
 };
 
