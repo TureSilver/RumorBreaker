@@ -7,11 +7,14 @@ angular.module('my-app').controller('main-controller', function($scope, $window,
 	$scope.name = 'This is a rumor breaker';
 	$scope.submit = function() {
     var encoded = $window.encodeURI($scope.inputText);
-    $http.post(host + analyzeUrl, {
-      apikey: apikey,
-      text: encoded,
-      language: 'chi'
-    }).then(function() {
+
+    var url = host + analyzeUrl;
+
+    url += '?apikey=' + apikey;
+    url += '&language=' + 'chi';
+    url += '&text=' + encoded;
+
+    $http.get(url).then(function() {
       console.log('done');
     }, function(e) {
       console.log('[Error]' + e);

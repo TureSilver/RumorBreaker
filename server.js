@@ -20,7 +20,7 @@ var getHeader = function (req) {
       ret[i] = req.headers[i];
     }
   }
-  ret['content-length'] = (parseInt(ret['content-length']) + body.length).toString();
+  ret['content-length'] = 0;
   return ret;
 };
 
@@ -40,9 +40,19 @@ var getPath = function (req) {
 var api = function(req, res) {
   counter++;
   var num = counter;
+
+  var reqpart = getPath(req).substr(4);
+  var questionMarkIdx = reqpart.indexOf('?');
+  if (questionMarkIdx >= 0 ) {
+    reqpart = reqpart.replace('?' , '/v1?');
+  } else {
+    reqpart += '/v1';
+  }
+
+
   var opt = {
     host:     'api.havenondemand.com',
-    path:     '/1/api/sync' + getPath(req).substr(4) + '/v1',
+    path:     '/1/api/sync' + reqpart,
     method:   req.method,
     headers:  getHeader(req)
   };
@@ -54,12 +64,8 @@ var api = function(req, res) {
       log('#%d\tEND', num);
     });
   });
-  if (/POST|PUT/i.test(req.method)) {
-    req2.write(body);
-    req.pipe(req2);
-  } else {
-    req2.end();
-  }
+  req2.end();
+
   req2.on('error', function (err) {
     log('#%d\tERROR: %s', num, err.stack);
     res.end(err.stack);
