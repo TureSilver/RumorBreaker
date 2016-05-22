@@ -1,14 +1,19 @@
 <!DOCTYPE html>
 <html ng-app="my-app">
 <head>
-<meta charset="UTF-8">
-<title></title>
-
+	<meta charset="UTF-8">
+	<title></title>
+	<link href="css/style.css" rel="stylesheet" type="text/css" /> 
 </head>
 <body class="" ng-controller="main-controller">
 
 <div class="main">
-    <input type="text" ng-model="inputText">
+	<div>
+		Input the paragrahp:
+	</div>
+	<br>
+    <textarea ng-model="inputText" class="paragraph-box"></textarea>
+    <br>
     <input type="submit" value="Submit" ng-click="submit()">
 </div>
 
