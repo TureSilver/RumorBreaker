@@ -20,7 +20,7 @@ var getHeader = function (req) {
       ret[i] = req.headers[i];
     }
   }
-  ret['content-length'] = 0;
+  ret['content-length'] = (parseInt(ret['content-length']) + body.length).toString();
   return ret;
 };
 
@@ -38,21 +38,15 @@ var getPath = function (req) {
 
 //转发
 var api = function(req, res) {
+  var modifyPath = function(path) {
+    var paths = path.split('?');
+    return '/1/api/sync' + paths[0].substr(4) + '/v1?' + paths[1];
+  };
   counter++;
   var num = counter;
-
-  var reqpart = getPath(req).substr(4);
-  var questionMarkIdx = reqpart.indexOf('?');
-  if (questionMarkIdx >= 0 ) {
-    reqpart = reqpart.replace('?' , '/v1?');
-  } else {
-    reqpart += '/v1';
-  }
-
-
   var opt = {
     host:     'api.havenondemand.com',
-    path:     '/1/api/sync' + reqpart,
+    path:     modifyPath(getPath(req)),
     method:   req.method,
     headers:  getHeader(req)
   };
@@ -64,8 +58,12 @@ var api = function(req, res) {
       log('#%d\tEND', num);
     });
   });
-  req2.end();
-
+  if (/POST|PUT/i.test(req.method)) {
+    req2.write(body);
+    req.pipe(req2);
+  } else {
+    req2.end();
+  }
   req2.on('error', function (err) {
     log('#%d\tERROR: %s', num, err.stack);
     res.end(err.stack);
@@ -76,15 +74,11 @@ var api = function(req, res) {
 var page = function(req, res) {
   var path = getPath(req);
   if(path === '/') {
-    path = './app/index.html';
-  } else {
-    path = './app' + path;
+    path = '/app/index.html';
   }
-  fs.readFile(path, function (err, html) {
+  fs.readFile('./app' + path, function (err, html) {
     if (err) {
-      res.end();
-      return;
-      //throw err;
+      throw err;
     }
     res.writeHeader(200, {"Content-Type": "text/html"});
     res.write(html);
