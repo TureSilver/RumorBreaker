@@ -1,20 +1,26 @@
 .paragraph-box {
-	width: 500px;
-	height: 500px;
+	width: 1000px;
+	height: 300px;
 }
 
 .title {
-	font-size: 30px;
+	font-size: 50px;
+	margin-left:auto;
+	margin-right:auto;
+	width:400px;
 }
 
 .submit{
 	width: 300px;
 	height: 75px;
+	margin-left:auto;
+	margin-right:auto;
 }
 
 .main{
-	display:flex;
-	flex-direction: row;
+	margin-left:auto;
+	margin-right:auto;
+	width: 1024px;
 }
 
 .left{
