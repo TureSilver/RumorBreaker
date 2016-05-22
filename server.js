@@ -69,10 +69,10 @@ var api = function(req, res) {
 //页面
 var page = function(req, res) {
   var path = getPath(req);
-  if(path.match('/')) {
+  if(path === '/') {
     path = '/app/index.html';
   }
-  fs.readFile('.' + path, function (err, html) {
+  fs.readFile('./app' + path, function (err, html) {
     if (err) {
       throw err;
     }
