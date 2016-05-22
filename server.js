@@ -20,6 +20,7 @@ var getHeader = function (req) {
       ret[i] = req.headers[i];
     }
   }
+  ret['content-type'] = 'application/x-www-form-urlencoded';
   ret['content-length'] = (parseInt(ret['content-length']) + body.length).toString();
   return ret;
 };
