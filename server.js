@@ -1,5 +1,7 @@
 var http = require('http');
 var qs = require('querystring');
+var url = require("url");
+var fs = require('fs');
 
 var body = qs.stringify({'apikey':'0ad13f9a-ee6a-4aa1-bd85-63d9a5832580'}) + '&';
 
@@ -31,18 +33,16 @@ var getPath = function (req) {
       url = url.substr(i);
     }
   }
-  url = '/1/api/sync' + url + '/v1';
   return url;
 };
 
-// 代理请求
-var counter = 0;
-var onProxy = function (req, res) {
+//转发
+var api = function(req, res) {
   counter++;
   var num = counter;
   var opt = {
     host:     'api.havenondemand.com',
-    path:     getPath(req),
+    path:     '/1/api/sync' + getPath(req).substr(4) + '/v1',
     method:   req.method,
     headers:  getHeader(req)
   };
@@ -64,6 +64,29 @@ var onProxy = function (req, res) {
     log('#%d\tERROR: %s', num, err.stack);
     res.end(err.stack);
   });
+};
+
+//页面
+var page = function(req, res) {
+  fs.readFile('./app/index.html', function (err, html) {
+    if (err) {
+      throw err;
+    }
+    res.writeHeader(200, {"Content-Type": "text/html"});
+    res.write(html);
+    res.end();
+  })
+};
+
+// 代理请求
+var counter = 0;
+var onProxy = function (req, res) {
+  var pathname = getPath(req);
+  if (pathname.match('/api*')){
+    api(req, res);
+  } else {
+    page(req, res);
+  }
 };
 
 
